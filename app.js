@@ -5,8 +5,17 @@ const loadApi = (name) => {
 };
 
 const loadPhones = (phones) => {
+
+     phones = phones.slice(0,10)
+const notFound = document.getElementById('not-found');
+     if(phones.length === 0){
+        notFound.classList.remove('d-none')
+     }else{
+        notFound.classList.add('d-none')
+     }
   const phonesContainer = document.getElementById("phones-container");
-console.log(phones)
+  phonesContainer.innerHTML = '';
+  console.log(phones);
   phones.forEach((phone) => {
     const div = document.createElement("div");
     div.classList.add("col");
@@ -19,10 +28,14 @@ console.log(phones)
             </div>
         </div>
         `;
-        phonesContainer.appendChild(div)
+    phonesContainer.appendChild(div);
   });
 };
 
-loadApi('oppo');
-
-
+document.getElementById("btn-search").addEventListener("click", () => {
+  const search = document.getElementById("search-field");
+  const searchField = search.value;
+  loadApi(searchField);
+search.value = ''
+  
+});
