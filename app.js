@@ -20,7 +20,7 @@ const loadPhones = (phones, dataLimit) => {
   }
   const phonesContainer = document.getElementById("phones-container");
   phonesContainer.innerHTML = "";
-  
+
   phones.forEach((phone) => {
     const div = document.createElement("div");
     div.classList.add("col");
@@ -31,7 +31,8 @@ const loadPhones = (phones, dataLimit) => {
                   <h5 class="card-title">${phone.phone_name}</h5>
                   <p class="card-text">This is a longer card with supporting text below as</p>
             </div>
-            <button onclick="showDetail('${phone.slug}')" class='btn btn-primary'>Show Detail</button>
+            <button onclick="loadDetail('${phone.slug}')" class='btn btn-primary' data-bs-toggle="modal" data-bs-target="#showPhoneDetaile">Show Detail</button>
+            
         </div>
         `;
     phonesContainer.appendChild(div);
@@ -51,12 +52,11 @@ document.getElementById("btn-search").addEventListener("click", () => {
 
 //enter key search
 
-document.getElementById('search-field').addEventListener('keypress', (e)=>{
-  
-  if(e.key === 'Enter'){
+document.getElementById("search-field").addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
     proccessSearch(10);
   }
-})
+});
 
 //load spinner
 
@@ -73,10 +73,23 @@ document.getElementById("btn-show-all").addEventListener("click", () => {
   proccessSearch();
 });
 
-
-const showDetail = (id) => {
+const loadDetail = (id) => {
   fetch(`https://openapi.programming-hero.com/api/phone/${id}`)
-  .then(res => res.json())
-  .then(data => console.log(data.data) )
-}
+    .then((res) => res.json())
+    .then((data) => showDetail(data.data));
+};
 
+const showDetail = (phone) => {
+  console.log(phone);
+  const showPhoneDetaileLabel = document.getElementById(
+    "showPhoneDetaileLabel"
+  );
+  showPhoneDetaileLabel.innerText = `${phone.name}`;
+  const modalBody = document.querySelector(".modal-body");
+  modalBody.innerHTML = `
+    <p>ReleaseDate: ${
+      phone.releaseDate ? phone.releaseDate : `no release date found`
+    } </p>
+    <p>Main Feature: ${phone.mainFeatures.sensors[0]} </p>
+  `;
+};
