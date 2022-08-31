@@ -30,12 +30,26 @@ const notFound = document.getElementById('not-found');
         `;
     phonesContainer.appendChild(div);
   });
+  toggleSpinner(false);
 };
 
 document.getElementById("btn-search").addEventListener("click", () => {
+  toggleSpinner(true)
   const search = document.getElementById("search-field");
   const searchField = search.value;
   loadApi(searchField);
 search.value = ''
   
 });
+
+
+//load spinner
+
+const toggleSpinner = isLoading => {
+  const loader = document.getElementById('loader')
+  if(isLoading){
+    loader.classList.remove('d-none')
+  }else{
+    loader.classList.add('d-none')
+  }
+}
